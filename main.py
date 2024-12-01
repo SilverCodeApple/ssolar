@@ -103,5 +103,5 @@ class game:
 
 
 if __name__ == "__main__":
-    juego = game(2)
+    juego = game(5)
     juego.gameloop()
