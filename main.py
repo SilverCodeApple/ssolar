@@ -1,6 +1,6 @@
 import pygame
 import numpy as np
-from ecuacion import calculo_num
+import calculo_num as calc
 import random as rn
 from botones_texto import Texto, Boton
 from lectura import datos_iniciales
@@ -11,7 +11,7 @@ class game:
     tamano = (1280, 720)
     running = True
     radios = 6
-    archivo = "momentos.csv"
+    
     def __init__(self,num):
         self.iniciar(num)
         self.inicializar_cuerpos(num)
@@ -21,7 +21,12 @@ class game:
         pygame.init()
         pygame.display.set_caption("Simulación")
         self.num = num
-        
+        G = 6.67430 * 10**(-11)  
+        masa_solar = 1.989e30 
+        anio_segundos = 31556952  
+        distancia_media = 1.496e11
+
+        self.G = G * masa_solar * (anio_segundos**2) * (1/(distancia_media**3)) * (100*3)
         self.screen = pygame.display.set_mode(self.tamano)
         self.lineas = pygame.Surface(self.tamano,pygame.SRCALPHA)
         self.clock = pygame.time.Clock()
@@ -38,9 +43,8 @@ class game:
             self.colores[i] = np.array([rn.randint(0,255),rn.randint(0,255),rn.randint(0,255)])
     
     def propiedades_cuerpos(self,num):
-        self.masas,self.velocidades,self.posiciones,self.colores = datos_iniciales("datos.csv", [1280/2,720/2],num)
-        
-
+        self.masas,self.velocidades,self.posiciones,self.colores = datos_iniciales("condiciones/datos.csv",num)
+    
     ### Accesors
     
     ## Events
@@ -65,12 +69,10 @@ class game:
         pygame.draw.circle(self.screen, (color[0] ,color[1],color[2]),(vector[0],vector[1]),radio, width=0)
     
     def movimiento_planeta(self):
-        euler = calculo_num(self.masas, self.posiciones, self.velocidades,self.momento_angular)
-        self.posiciones,self.velocidades,self.momento_angular = euler.metodo_euler()
-        datos = np.column_stack((self.posiciones.reshape(1,-1),self.velocidades.reshape(1,-1), self.momento_angular.reshape(1,-1)))
-        
-        with open(self.archivo,"a",encoding="utf-8") as file:
-            np.savetxt(file,datos,delimiter = ",")
+        obj_calc = calc.CalculoNumerico(self.posiciones, self.velocidades,self.masas,self.num, self.G)
+        self.posiciones  = obj_calc.euler()
+        self.velocidades = obj_calc.get_velocidades()
+
     def manejo_texto(self,string,vector,color):
         obj_texto = Texto()
         texto_fuente,superficie = obj_texto.mostrar_texto(vector, string, color)

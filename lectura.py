@@ -1,6 +1,6 @@
 import numpy as np
 
-def datos_iniciales(nombre_archivo, eje_referencia,numero):
+def datos_iniciales(nombre_archivo,numero):
     informacion = np.genfromtxt(nombre_archivo, delimiter=',', names=True, dtype=None, encoding='utf-8')
     nombres = informacion["Planeta"]
     masas = informacion["Masa"]
