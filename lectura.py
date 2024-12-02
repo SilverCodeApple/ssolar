@@ -13,7 +13,7 @@ def datos_iniciales(nombre_archivo,numero):
     for i in range(numero):
         velocidad.append([informacion["Vx"][i], informacion["Vy"][i]])
         posicion.append([informacion["Posx"][i] , informacion["Posy"][i]])
-        color.append([255,255,255])
+        color.append([informacion["R"][i],informacion["G"][i],informacion["B"][i]])
     
 
     

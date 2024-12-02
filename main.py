@@ -11,7 +11,7 @@ class game:
     tamano = (1280, 720)
     running = True
     radios = 6
-    
+    h = 0.001
     def __init__(self,num):
         self.iniciar(num)
         self.inicializar_cuerpos(num)
@@ -25,8 +25,8 @@ class game:
         masa_solar = 1.989e30 
         anio_segundos = 31556952  
         distancia_media = 1.496e11
-
-        self.G = G * masa_solar * (anio_segundos**2) * (1/(distancia_media**3)) * (100*3)
+        ua = 100
+        self.G = G * masa_solar * (anio_segundos**2) * (1/(distancia_media**3)) * (ua**3)
         self.screen = pygame.display.set_mode(self.tamano)
         self.lineas = pygame.Surface(self.tamano,pygame.SRCALPHA)
         self.clock = pygame.time.Clock()
@@ -44,7 +44,8 @@ class game:
     
     def propiedades_cuerpos(self,num):
         self.masas,self.velocidades,self.posiciones,self.colores = datos_iniciales("condiciones/datos.csv",num)
-    
+        self.obj_calc = calc.CalculoNumerico(self.posiciones, self.velocidades,
+                                             self.masas,self.num, self.G, self.h)
     ### Accesors
     
     ## Events
@@ -69,9 +70,10 @@ class game:
         pygame.draw.circle(self.screen, (color[0] ,color[1],color[2]),(vector[0],vector[1]),radio, width=0)
     
     def movimiento_planeta(self):
-        obj_calc = calc.CalculoNumerico(self.posiciones, self.velocidades,self.masas,self.num, self.G)
-        self.posiciones  = obj_calc.euler()
-        self.velocidades = obj_calc.get_velocidades()
+        
+        self.posiciones  = self.obj_calc.euler()
+        #print(self.posiciones)
+        self.velocidades = self.obj_calc.get_velocidades()
 
     def manejo_texto(self,string,vector,color):
         obj_texto = Texto()
@@ -103,5 +105,5 @@ class game:
 
 
 if __name__ == "__main__":
-    juego = game(5)
+    juego = game(9)
     juego.gameloop()
