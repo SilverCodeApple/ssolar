@@ -4,7 +4,7 @@ import calculo_num as calc
 import random as rn
 from botones_texto import Texto, Boton
 from lectura import datos_iniciales
-
+import time as tm
 
 class game:
     ##Variables
@@ -31,7 +31,7 @@ class game:
         self.lineas = pygame.Surface(self.tamano,pygame.SRCALPHA)
         self.clock = pygame.time.Clock()
         self.clock.tick(60) 
-        
+        self.tiempo = tm.time()
     def inicializar_cuerpos(self,num):
         self.posiciones = np.zeros((num,2))
         self.velocidades = np.zeros_like(self.posiciones)
@@ -61,11 +61,14 @@ class game:
             self.circulo(matriz[i],[0,0,0],radio)
     
     def linea(self,matriz,color):
+        
         for i in range(self.num):
             pygame.draw.circle(self.lineas,(color[i][0] ,color[i][1],color[i][2]),
                                 (matriz[i][0], matriz[i][1]), 2)
         self.screen.blit(self.lineas, (0, 0))
-    
+
+
+
     def circulo(self, vector, color, radio):
         pygame.draw.circle(self.screen, (color[0] ,color[1],color[2]),(vector[0],vector[1]),radio, width=0)
     
