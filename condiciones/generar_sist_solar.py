@@ -28,7 +28,10 @@ posicion = []
 velocidad = []
 
 for i in range(len(masas)):
-    velocidad.append([-semieje_menor[i]*omega[i]*ua*np.sin(np.deg2rad(angulos[i])),datos["Mayor"][i]*omega[i]*ua*np.cos(np.deg2rad(angulos[i]))])
+    if(datos["Planeta"][i] == "Venus"):
+        velocidad.append([semieje_menor[i]*omega[i]*ua*np.sin(np.deg2rad(angulos[i])),-datos["Mayor"][i]*omega[i]*ua*np.cos(np.deg2rad(angulos[i]))])
+    else:
+        velocidad.append([-semieje_menor[i]*omega[i]*ua*np.sin(np.deg2rad(angulos[i])),datos["Mayor"][i]*omega[i]*ua*np.cos(np.deg2rad(angulos[i]))])
     posicion.append([semieje_menor[i]*ua*np.cos(np.deg2rad(angulos[i])) + eje_de_referencia[0],datos["Mayor"][i]*ua*np.sin(np.deg2rad(angulos[i]))+ eje_de_referencia[1]])
 
 colores_planetas = [
@@ -45,12 +48,13 @@ colores_planetas = [
 
 
 header = "Planeta,Vx,Vy,Posx,Posy,Masa,R,G,B"
+print(velocidad)
 
 with open("condiciones/datos.csv","w",encoding= "utf-8") as file:
     file.write(header)
     for i in range(len(masas)):
         file.write(f"\n{nombres[i]},{velocidad[i][0]},{velocidad[i][1]},{posicion[i][0]},{posicion[i][1]},{masas[i]},{colores_planetas[i][0]},{colores_planetas[i][1]},{colores_planetas[i][2]}")
-    
+
 
 
 

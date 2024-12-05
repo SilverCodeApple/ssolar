@@ -17,10 +17,13 @@ class Texto:
         return pygame.mouse.get_pressed(num_buttons=3)
 
 class Boton(Texto):
-    def __init__(self, posicion, tamaño, texto,color_texto, color_recuadro):
+    def __init__(self, ):
         super().__init__()
+          
+    def propiedades(self,texto,color_texto,posicion,tamaño,color_recuadro):
         self.rectangulo = pygame.Surface((tamaño[0],tamaño[1]))
         self.rectangulo.fill((color_recuadro[0],color_recuadro[1],color_recuadro[2]))
+        
         self.posicion = posicion
         self.color_texto = color_texto
         self.tamano = tamaño

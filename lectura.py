@@ -15,6 +15,4 @@ def datos_iniciales(nombre_archivo,numero):
         posicion.append([informacion["Posx"][i] , informacion["Posy"][i]])
         color.append([informacion["R"][i],informacion["G"][i],informacion["B"][i]])
     
-
-    
-    return masas, np.array(velocidad), np.array(posicion),np.array(color)
+    return masas, np.array(velocidad), np.array(posicion),np.array(color), nombres
